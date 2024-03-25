@@ -1,0 +1,10 @@
+---
+-  hosts: all
+   become: true
+   tasks: 
+   -  name: restart httpd service
+      service:
+        name: httpd
+        state: "{{ item }}"
+      with_items:
+        -  restarted  

@@ -1,0 +1,12 @@
+---
+-  hosts: all
+   become: true
+   tasks:
+   -  name: install php package
+      yum:
+        name: php
+   -  name: remove httpd package
+      yum:
+        name: httpd
+        state: absent
+     
