@@ -1,0 +1,46 @@
+---
+-  hosts: all
+   become: true
+   pre_tasks:
+   -  name: check updates (Centos)
+      dnf:
+        update_only: yes
+        update_cache: yes
+        state: latest
+      when: ansible_distribution == "CentOS"
+
+   -  name: check updates (Ubuntu)
+      apt:
+        upgrade: dist
+        update_cache: yes
+        state: latest
+      when: ansible_distribution == "Ubuntu"
+
+-  hosts: web_servers
+   become: true
+   tasks:
+   -  name: install httpd package
+      dnf:
+        name:
+          - httpd
+          - php
+        state: latest
+      when: ansible_distribution == "CentOS"
+
+-  hosts: file_servers
+   become: true
+   tasks:
+   -  name: Install samba package
+      package:
+        name: samba
+        state: latest 
+
+-  hosts: db_servers
+   become: true
+   tasks:
+   -  name: Install MariaDB on centos
+      dnf:
+        name: mariadb
+        state: latest
+      when: ansible_distribution == "CentOS"    
+           
