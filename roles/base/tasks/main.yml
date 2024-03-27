@@ -3,3 +3,12 @@
    authorized_key:
      user: simone
      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmzQd5oNn43mp38m4sC18kQRReug6cKeB3//THx8oZ8 ansible"
+
+-  name: generate sshd_config file from template
+   template:
+     src: "{{ ssh_template_file }}"
+     dest: /etc/ssh/sshd_config
+     mode: 0644
+     owner: root
+     group: root
+   notify: restart_sshd    
