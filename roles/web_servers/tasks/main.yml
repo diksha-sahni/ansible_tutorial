@@ -1,16 +1,16 @@
 -  name: install httpd package
    tags: centos,apache,httpd
-   dnf:
+   package:
      name:
-       - httpd
-       - php
+       - "{{ apache_package_name }}"
+       - "{{ php_package_name }}"
      state: latest
-   when: ansible_distribution == "CentOS"
+   
 
--  name: Start httpd service
+-  name: Start and enable httpd service
    tags: centos,service,httpd
    service:
-     name: httpd
+     name: "{{ apache_service }}"
      state: started
      enabled: true
 
@@ -19,13 +19,8 @@
      path: /etc/httpd/conf/httpd.conf
      regexp: '^ServerAdmin'
      line: ServerAdmin root@localhost
-   register: httpd
+   notify: restart_apache
 
--  name: Restart httpd service
-   service:
-     name: httpd
-     state: restarted
-   when: httpd.changed     
 
 -  name: copy html file
    tags: httpd,apache,centos
