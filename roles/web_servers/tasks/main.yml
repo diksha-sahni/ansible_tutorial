@@ -1,0 +1,38 @@
+-  name: install httpd package
+   tags: centos,apache,httpd
+   dnf:
+     name:
+       - httpd
+       - php
+     state: latest
+   when: ansible_distribution == "CentOS"
+
+-  name: Start httpd service
+   tags: centos,service,httpd
+   service:
+     name: httpd
+     state: started
+     enabled: true
+
+-  name: Change e-mail address for admin
+   lineinfile:
+     path: /etc/httpd/conf/httpd.conf
+     regexp: '^ServerAdmin'
+     line: ServerAdmin root@localhost
+   register: httpd
+
+-  name: Restart httpd service
+   service:
+     name: httpd
+     state: restarted
+   when: httpd.changed     
+
+-  name: copy html file
+   tags: httpd,apache,centos
+   copy:
+     src: default_site.html
+     dest: /var/www/html/index.html
+     owner: root
+     group: root
+     mode: 0644     
+

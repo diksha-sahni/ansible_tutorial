@@ -1,0 +1,5 @@
+-  name: Install MariaDB on centos
+   tags: db,centos,centos
+   dnf:
+     name: mariadb
+     state: latest
